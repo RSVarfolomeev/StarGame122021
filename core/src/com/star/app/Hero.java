@@ -45,11 +45,24 @@ public class Hero {
         } else {
             lastDisplacement.set(0, 0);
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            position.x -= MathUtils.cosDeg(angle) * 80.0f * dt;
+            position.y -= MathUtils.sinDeg(angle) * 80.0f * dt;
+            lastDisplacement.set(MathUtils.cosDeg(angle) * 80.0f * dt,
+                    MathUtils.sinDeg(angle) * 80.0f * dt);
+        }
 
         if (position.x < 32) {
             position.x = 32;
         }
-
-
+        if (position.x > ScreenManager.SCREEN_WIDTH - 32) {
+            position.x = ScreenManager.SCREEN_WIDTH - 32;
+        }
+        if (position.y < 32) {
+            position.y = 32;
+        }
+        if (position.y > ScreenManager.SCREEN_HEIGHT - 32) {
+            position.y = ScreenManager.SCREEN_HEIGHT - 32;
+        }
     }
 }
