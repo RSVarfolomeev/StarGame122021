@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.star.app.screen.ScreenManager;
@@ -19,7 +20,12 @@ public class Hero {
     private float fireTimer;
     private int score;
     private int scoreView;
+    private int hpMax;
+    private int hp;
+    private Circle hitArea;
 
+    private final float BASE_SIZE = 64;
+    private final float BASE_RADIUS = BASE_SIZE / 4;
 
     public int getScoreView() {
         return scoreView;
@@ -33,6 +39,18 @@ public class Hero {
         return position;
     }
 
+    public int getHpMax() {
+        return hpMax;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public Circle getHitArea() {
+        return hitArea;
+    }
+
     public void addScore(int amount) {
         score += amount;
     }
@@ -44,12 +62,23 @@ public class Hero {
         this.velocity = new Vector2(0, 0);
         this.angle = 0.0f;
         this.enginePower = 500.0f;
+        this.hitArea = new Circle(ScreenManager.SCREEN_WIDTH / 2,
+                ScreenManager.SCREEN_HEIGHT / 2, BASE_RADIUS);
+        this.hpMax = 10;
+        this.hp = hpMax;
     }
 
     public void render(SpriteBatch batch) {
         batch.draw(texture, position.x - 32, position.y - 32, 32, 32,
                 64, 64, 1, 1,
                 angle);
+    }
+
+    public boolean takeDamage(int amount) {
+        hp -= amount;
+//        if (hp <= 0) {
+//        }
+        return true;
     }
 
     public void update(float dt) {
@@ -115,5 +144,6 @@ public class Hero {
             velocity.y *= -0.5f;
         }
 
+        hitArea.setPosition(position);
     }
 }
