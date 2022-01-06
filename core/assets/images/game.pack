@@ -17,16 +17,37 @@ ship
   orig: 64, 64
   offset: 0, 0
   index: -1
-bullet
+poweruphp
   rotate: false
   xy: 326, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+powerupcoin
+  rotate: false
+  xy: 392, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+powerupammo
+  rotate: false
+  xy: 260, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+bullet
+  rotate: false
+  xy: 458, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 star16
   rotate: false
-  xy: 326, 36
+  xy: 492, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

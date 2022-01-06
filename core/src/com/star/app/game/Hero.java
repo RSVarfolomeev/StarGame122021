@@ -24,6 +24,8 @@ public class Hero {
     private int scoreView;
     private int hpMax;
     private int hp;
+    private int coins;
+    private int coinsView;
     private StringBuilder sb;
     private Circle hitArea;
     private Weapon currentWeapon;
@@ -48,6 +50,21 @@ public class Hero {
         score += amount;
     }
 
+    public void addCoins(int amount) {
+        coins += amount;
+    }
+
+    public void addHp(int amount) {
+        hp += amount;
+        if (hp > hpMax) {
+            hp = hpMax;
+        }
+    }
+
+    public void addAmmo(int amount) {
+        currentWeapon.addBullets(amount);
+    }
+
     public Hero(GameController gc) {
         this.gc = gc;
         this.texture = Assets.getInstance().getAtlas().findRegion("ship");
@@ -70,8 +87,9 @@ public class Hero {
     public void renderGUI(SpriteBatch batch, BitmapFont font) {
         sb.setLength(0);
         sb.append("SCORE: ").append(scoreView).append("\n");
+        sb.append("COINS: ").append(coinsView).append("\n");
         sb.append("HP: ").append(hp).append(" / ").append(hpMax).append("\n");
-        sb.append("BULLERS: ").append(currentWeapon.getCurBullets()).append(" / ").append(currentWeapon.getMaxBullets()).append("\n");
+        sb.append("BULLETS: ").append(currentWeapon.getCurBullets()).append(" / ").append(currentWeapon.getMaxBullets()).append("\n");
         font.draw(batch, sb, 20, 700);
     }
 
@@ -88,6 +106,7 @@ public class Hero {
     public void update(float dt) {
         fireTimer += dt;
         updateScore(dt);
+        updateCoins(dt);
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             tryToFire();
@@ -155,6 +174,15 @@ public class Hero {
             scoreView += 2000 * dt;
             if (scoreView > score) {
                 scoreView = score;
+            }
+        }
+    }
+
+    private void updateCoins(float dt) {
+        if (coinsView < coins) {
+            coinsView += 100 * dt;
+            if (coinsView > coins) {
+                coinsView = coins;
             }
         }
     }
