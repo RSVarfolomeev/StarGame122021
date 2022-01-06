@@ -7,6 +7,7 @@ import com.star.app.screen.ScreenManager;
 public class GameController {
     private Background background;
     private AsteroidController asteroidController;
+    private PowerUpController powerUpController;
     private BulletController bulletController;
     private ParticleController particleController;
     private Hero hero;
@@ -18,6 +19,10 @@ public class GameController {
 
     public AsteroidController getAsteroidController() {
         return asteroidController;
+    }
+
+    public PowerUpController getPowerUpController() {
+        return powerUpController;
     }
 
     public Hero getHero() {
@@ -39,6 +44,7 @@ public class GameController {
         this.bulletController = new BulletController(this);
         this.particleController = new ParticleController();
         this.tempVec = new Vector2();
+        this.powerUpController = new PowerUpController(this);
 
         for (int i = 0; i < 3; i++) {
             asteroidController.setup(MathUtils.random(0, ScreenManager.SCREEN_WIDTH),
@@ -52,6 +58,7 @@ public class GameController {
         background.update(dt);
         hero.update(dt);
         asteroidController.update(dt);
+        powerUpController.update(dt);
         bulletController.update(dt);
         particleController.update(dt);
         checkCollisions();
@@ -85,7 +92,7 @@ public class GameController {
                 Asteroid a = asteroidController.getActiveList().get(j);
                 if (a.getHitArea().contains(b.getPosition())) {
 
-                    particleController.setup(b.getPosition().x +MathUtils.random(-4, 4), b.getPosition().y + MathUtils.random(-4, 4),
+                    particleController.setup(b.getPosition().x + MathUtils.random(-4, 4), b.getPosition().y + MathUtils.random(-4, 4),
                             b.getVelocity().x * -0.3f + MathUtils.random(-30, 30), b.getVelocity().y * -0.3f + MathUtils.random(-30, 30),
                             0.2f, 2.2f, 1.5f,
                             1.0f, 1.0f, 1.0f, 1,
@@ -101,6 +108,15 @@ public class GameController {
             }
         }
 
-
+        for (int i = 0; i < powerUpController.getActiveList().size(); i++) {
+            PowerUp p = powerUpController.getActiveList().get(i);
+            if (p.getHitArea().overlaps(hero.getHitArea())) {
+                hero.addCoins(p.getCoinsBonus());
+                hero.addHp(p.getHpBonus());
+                hero.addAmmo(p.getAmmoBonus());
+                p.deactivate();
+                break;
+            }
+        }
     }
 }

@@ -7,9 +7,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.star.app.game.helpers.Poolable;
 import com.star.app.screen.ScreenManager;
-import com.star.app.screen.utils.Assets;
 
-public class Asteroid implements Poolable {
+public class PowerUp implements Poolable {
     private GameController gc;
     private TextureRegion texture;
     private Vector2 position;
@@ -17,12 +16,16 @@ public class Asteroid implements Poolable {
     private boolean active;
     private int hpMax;
     private int hp;
+    private int coinsBonus;
+    private int hpBonus;
+    private int ammoBonus;
     private float angle;
     private float rotationSpeed;
     private Circle hitArea;
     private float scale;
+    private PowerUpType powerUpType;
 
-    private final float BASE_SIZE = 256;
+    private final float BASE_SIZE = 64;
     private final float BASE_RADIUS = BASE_SIZE / 2;
 
     public int getHpMax() {
@@ -31,6 +34,18 @@ public class Asteroid implements Poolable {
 
     public int getHp() {
         return hp;
+    }
+
+    public int getCoinsBonus() {
+        return coinsBonus;
+    }
+
+    public int getHpBonus() {
+        return hpBonus;
+    }
+
+    public int getAmmoBonus() {
+        return ammoBonus;
     }
 
     public Circle getHitArea() {
@@ -50,9 +65,10 @@ public class Asteroid implements Poolable {
         return velocity;
     }
 
-    public Asteroid(GameController gc) {
+    public PowerUp(GameController gc) {
+        this.powerUpType = null;
         this.gc = gc;
-        this.texture = Assets.getInstance().getAtlas().findRegion("asteroid");
+        this.texture = null;
         this.position = new Vector2(0, 0);
         this.velocity = new Vector2(0, 0);
         this.hitArea = new Circle(0, 0, 0);
@@ -60,43 +76,9 @@ public class Asteroid implements Poolable {
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, position.x - 128, position.y - 128, 128, 128,
-                256, 256, scale, scale,
+        batch.draw(texture, position.x - 32, position.y - 32, 32, 32,
+                64, 64, scale, scale,
                 angle);
-    }
-
-    public boolean takeDamage(int amount) {
-        hp -= amount;
-        if (hp <= 0) {
-            deactivate();
-
-            int chanceOfPowerUp = MathUtils.random(1, 100);
-            if (chanceOfPowerUp >= 91 && scale == 1) {
-                gc.getPowerUpController().setup(position.x, position.y, velocity.x / 20, velocity.y / 20, 0.5f);
-            }
-            if (chanceOfPowerUp >= 94 && scale == 0.75f) {
-                gc.getPowerUpController().setup(position.x, position.y, velocity.x / 20, velocity.y / 20, 0.5f);
-            }
-            if (chanceOfPowerUp >= 97 && scale == 0.50f) {
-                gc.getPowerUpController().setup(position.x, position.y, velocity.x / 20, velocity.y / 20, 0.5f);
-            }
-            if (chanceOfPowerUp >= 100 && scale == 0.25f) {
-                gc.getPowerUpController().setup(position.x, position.y, velocity.x / 20, velocity.y / 20, 0.5f);
-            }
-
-            if (scale > 0.3f) {
-                gc.getAsteroidController().setup(position.x, position.y,
-                        MathUtils.random(-150, 150), MathUtils.random(-150, 150), scale - 0.25f);
-                gc.getAsteroidController().setup(position.x, position.y,
-                        MathUtils.random(-190, 190), MathUtils.random(-190, 190), scale - 0.25f);
-                gc.getAsteroidController().setup(position.x, position.y,
-                        MathUtils.random(-150, 150), MathUtils.random(-150, 150), scale - 0.25f);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public void deactivate() {
@@ -122,13 +104,27 @@ public class Asteroid implements Poolable {
     }
 
     public void activate(float x, float y, float vx, float vy, float scale) {
+        int typeNumber = MathUtils.random(1, 3);
+        if (typeNumber == 1){
+            powerUpType = PowerUpType.COINS;
+        }
+        if (typeNumber == 2){
+            powerUpType = PowerUpType.HP;
+        }
+        if (typeNumber == 3){
+            powerUpType = PowerUpType.AMMO;
+        }
+        texture = powerUpType.getTexture();
         position.set(x, y);
         velocity.set(vx, vy);
         active = true;
-        hpMax = (int) (10 * scale);
+        hpMax = (int) (1 * scale);
         hp = hpMax;
-        angle = MathUtils.random(0.0f, 360.0f);
-        rotationSpeed = MathUtils.random(-180.0f, 180.0f);
+        coinsBonus = (int) (powerUpType.getCoins() * 2 * scale);
+        hpBonus = (int) (powerUpType.getHp() * 2 * scale);
+        ammoBonus = (int) (powerUpType.getAmmo() * 2 * scale);
+        angle = 0.0f;
+        rotationSpeed = 0.0f;
         this.scale = scale;
         hitArea.setPosition(position);
         hitArea.setRadius(BASE_RADIUS * scale * 0.9f);
