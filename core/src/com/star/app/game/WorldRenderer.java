@@ -22,10 +22,10 @@ public class WorldRenderer {
         ScreenUtils.clear(0.0f, 0.1f, 0.5f, 1);
         batch.begin();
         gc.getBackground().render(batch);
-        gc.getPowerUpController().render(batch);
         gc.getAsteroidController().render(batch);
         gc.getBulletController().render(batch);
         gc.getParticleController().render(batch);
+        gc.getPowerUpsController().render(batch);
         gc.getHero().render(batch);
         gc.getHero().renderGUI(batch, font32);
         batch.end();

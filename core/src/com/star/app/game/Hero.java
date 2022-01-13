@@ -24,11 +24,14 @@ public class Hero {
     private int scoreView;
     private int hpMax;
     private int hp;
-    private int coins;
-    private int coinsView;
     private StringBuilder sb;
     private Circle hitArea;
     private Weapon currentWeapon;
+    private int money;
+
+    public Weapon getCurrentWeapon() {
+        return currentWeapon;
+    }
 
     public float getAngle() {
         return angle;
@@ -50,21 +53,6 @@ public class Hero {
         score += amount;
     }
 
-    public void addCoins(int amount) {
-        coins += amount;
-    }
-
-    public void addHp(int amount) {
-        hp += amount;
-        if (hp > hpMax) {
-            hp = hpMax;
-        }
-    }
-
-    public void addAmmo(int amount) {
-        currentWeapon.addBullets(amount);
-    }
-
     public Hero(GameController gc) {
         this.gc = gc;
         this.texture = Assets.getInstance().getAtlas().findRegion("ship");
@@ -78,18 +66,18 @@ public class Hero {
         this.hitArea = new Circle(position, 29);
         this.currentWeapon = new Weapon(gc, this, "Laser", 0.1f, 1, 600.0f, 300,
                 new Vector3[]{
-                    new Vector3(28, 0, 0),
-                    new Vector3(28, 90, 20),
-                    new Vector3(28, -90, -20)
+                        new Vector3(28, 0, 0),
+                        new Vector3(28, 90, 20),
+                        new Vector3(28, -90, -20)
                 });
     }
 
     public void renderGUI(SpriteBatch batch, BitmapFont font) {
         sb.setLength(0);
         sb.append("SCORE: ").append(scoreView).append("\n");
-        sb.append("COINS: ").append(coinsView).append("\n");
         sb.append("HP: ").append(hp).append(" / ").append(hpMax).append("\n");
-        sb.append("BULLETS: ").append(currentWeapon.getCurBullets()).append(" / ").append(currentWeapon.getMaxBullets()).append("\n");
+        sb.append("BULLERS: ").append(currentWeapon.getCurBullets()).append(" / ").append(currentWeapon.getMaxBullets()).append("\n");
+        sb.append("MONEY: ").append(money).append("\n");
         font.draw(batch, sb, 20, 700);
     }
 
@@ -103,10 +91,23 @@ public class Hero {
         hp -= amount;
     }
 
+    public void consume(PowerUp p) {
+        switch (p.getType()) {
+            case MEDKIT:
+                hp += p.getPower();
+                break;
+            case MONEY:
+                money += p.getPower();
+                break;
+            case AMMOS:
+                currentWeapon.addAmmos( p.getPower()) ;
+                break;
+        }
+    }
+
     public void update(float dt) {
         fireTimer += dt;
         updateScore(dt);
-        updateCoins(dt);
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             tryToFire();
@@ -174,15 +175,6 @@ public class Hero {
             scoreView += 2000 * dt;
             if (scoreView > score) {
                 scoreView = score;
-            }
-        }
-    }
-
-    private void updateCoins(float dt) {
-        if (coinsView < coins) {
-            coinsView += 100 * dt;
-            if (coinsView > coins) {
-                coinsView = coins;
             }
         }
     }

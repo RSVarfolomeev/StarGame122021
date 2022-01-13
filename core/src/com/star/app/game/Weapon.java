@@ -34,13 +34,6 @@ public class Weapon {
         return curBullets;
     }
 
-    public void addBullets(int amount) {
-        curBullets += amount;
-        if (curBullets > maxBullets) {
-            curBullets = maxBullets;
-        }
-    }
-
     public Weapon(GameController gc, Hero hero, String title, float firePeriod, int damage,
                   float bulletSpeed, int maxBullets, Vector3[] slots) {
         this.gc = gc;
@@ -65,6 +58,13 @@ public class Weapon {
                 vy = hero.getVelocity().y + bulletSpeed * MathUtils.sinDeg(hero.getAngle() + slots[i].z);
                 gc.getBulletController().setup(x, y, vx, vy);
             }
+        }
+    }
+
+    public void addAmmos(int amount) {
+        curBullets += amount;
+        if (curBullets > maxBullets) {
+            curBullets = maxBullets;
         }
     }
 }

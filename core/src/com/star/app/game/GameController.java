@@ -7,11 +7,15 @@ import com.star.app.screen.ScreenManager;
 public class GameController {
     private Background background;
     private AsteroidController asteroidController;
-    private PowerUpController powerUpController;
     private BulletController bulletController;
     private ParticleController particleController;
+    private PowerUpsController powerUpsController;
     private Hero hero;
     private Vector2 tempVec;
+
+    public PowerUpsController getPowerUpsController() {
+        return powerUpsController;
+    }
 
     public ParticleController getParticleController() {
         return particleController;
@@ -19,10 +23,6 @@ public class GameController {
 
     public AsteroidController getAsteroidController() {
         return asteroidController;
-    }
-
-    public PowerUpController getPowerUpController() {
-        return powerUpController;
     }
 
     public Hero getHero() {
@@ -43,8 +43,8 @@ public class GameController {
         this.asteroidController = new AsteroidController(this);
         this.bulletController = new BulletController(this);
         this.particleController = new ParticleController();
+        this.powerUpsController = new PowerUpsController(this);
         this.tempVec = new Vector2();
-        this.powerUpController = new PowerUpController(this);
 
         for (int i = 0; i < 3; i++) {
             asteroidController.setup(MathUtils.random(0, ScreenManager.SCREEN_WIDTH),
@@ -58,9 +58,9 @@ public class GameController {
         background.update(dt);
         hero.update(dt);
         asteroidController.update(dt);
-        powerUpController.update(dt);
         bulletController.update(dt);
         particleController.update(dt);
+        powerUpsController.update(dt);
         checkCollisions();
     }
 
@@ -100,23 +100,26 @@ public class GameController {
 
 
                     b.deactivate();
-                    if (a.takeDamage(1)) {
+                    if (a.takeDamage(hero.getCurrentWeapon().getDamage())) {
                         hero.addScore(a.getHpMax() * 100);
+                        for (int k = 0; k < 3; k++) {
+                            powerUpsController.setup(a.getPosition().x, a.getPosition().y,
+                                    a.getScale() * 0.25f);
+                        }
                     }
                     break;
                 }
             }
         }
 
-        for (int i = 0; i < powerUpController.getActiveList().size(); i++) {
-            PowerUp p = powerUpController.getActiveList().get(i);
-            if (p.getHitArea().overlaps(hero.getHitArea())) {
-                hero.addCoins(p.getCoinsBonus());
-                hero.addHp(p.getHpBonus());
-                hero.addAmmo(p.getAmmoBonus());
+        for (int i = 0; i < powerUpsController.getActiveList().size(); i++) {
+            PowerUp p = powerUpsController.getActiveList().get(i);
+            if(hero.getHitArea().contains(p.getPosition())){
+                hero.consume(p);
+                particleController.getEffectBuilder().takePowerUpEffect(p.getPosition().x,p.getPosition().y );
                 p.deactivate();
-                break;
             }
         }
+
     }
 }

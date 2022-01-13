@@ -25,6 +25,10 @@ public class Asteroid implements Poolable {
     private final float BASE_SIZE = 256;
     private final float BASE_RADIUS = BASE_SIZE / 2;
 
+    public float getScale() {
+        return scale;
+    }
+
     public int getHpMax() {
         return hpMax;
     }
@@ -69,21 +73,6 @@ public class Asteroid implements Poolable {
         hp -= amount;
         if (hp <= 0) {
             deactivate();
-
-            int chanceOfPowerUp = MathUtils.random(1, 100);
-            if (chanceOfPowerUp >= 91 && scale == 1) {
-                gc.getPowerUpController().setup(position.x, position.y, velocity.x / 20, velocity.y / 20, 0.5f);
-            }
-            if (chanceOfPowerUp >= 94 && scale == 0.75f) {
-                gc.getPowerUpController().setup(position.x, position.y, velocity.x / 20, velocity.y / 20, 0.5f);
-            }
-            if (chanceOfPowerUp >= 97 && scale == 0.50f) {
-                gc.getPowerUpController().setup(position.x, position.y, velocity.x / 20, velocity.y / 20, 0.5f);
-            }
-            if (chanceOfPowerUp >= 100 && scale == 0.25f) {
-                gc.getPowerUpController().setup(position.x, position.y, velocity.x / 20, velocity.y / 20, 0.5f);
-            }
-
             if (scale > 0.3f) {
                 gc.getAsteroidController().setup(position.x, position.y,
                         MathUtils.random(-150, 150), MathUtils.random(-150, 150), scale - 0.25f);

@@ -6,16 +6,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.star.app.screen.GameScreen;
+import com.star.app.screen.ScreenManager;
 
 public class StarGame extends Game {
     private SpriteBatch batch;
-    private GameScreen gameScreen;
+
 
     @Override
     public void create() {
         this.batch = new SpriteBatch();
-        gameScreen = new GameScreen(batch);
-        setScreen(gameScreen);
+        ScreenManager.getInstance().init(this, batch);
+        ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.MENU);
     }
 
     @Override
@@ -23,7 +24,6 @@ public class StarGame extends Game {
         float dt = Gdx.graphics.getDeltaTime();
         getScreen().render(dt);
     }
-
 
 
     @Override
