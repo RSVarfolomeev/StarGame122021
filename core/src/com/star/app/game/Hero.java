@@ -41,6 +41,18 @@ public class Hero {
         return hitArea;
     }
 
+    public int getHp() {
+        return hp;
+    }
+
+    public int getScoreView() {
+        return scoreView;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
     public Vector2 getVelocity() {
         return velocity;
     }
@@ -76,7 +88,7 @@ public class Hero {
         sb.setLength(0);
         sb.append("SCORE: ").append(scoreView).append("\n");
         sb.append("HP: ").append(hp).append(" / ").append(hpMax).append("\n");
-        sb.append("BULLERS: ").append(currentWeapon.getCurBullets()).append(" / ").append(currentWeapon.getMaxBullets()).append("\n");
+        sb.append("BULLETS: ").append(currentWeapon.getCurBullets()).append(" / ").append(currentWeapon.getMaxBullets()).append("\n");
         sb.append("MONEY: ").append(money).append("\n");
         font.draw(batch, sb, 20, 700);
     }
