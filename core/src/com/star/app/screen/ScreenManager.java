@@ -52,7 +52,7 @@ public class ScreenManager {
         viewport.apply();
     }
 
-    public void changeScreen(ScreenType type, Object... args) {
+    public void changeScreen(ScreenType type, Object... agrs) {
         Screen screen = game.getScreen();
         Assets.getInstance().clear();
         if (screen != null) {
@@ -71,7 +71,7 @@ public class ScreenManager {
                 break;
             case GAMEOVER:
                 targetScreen = gameOverScreen;
-                gameOverScreen.setDefeatedHero((Hero) args[0]);
+                gameOverScreen.setDefeatedHero((Hero) agrs[0]);
                 Assets.getInstance().loadAssets(ScreenType.GAMEOVER);
                 break;
         }

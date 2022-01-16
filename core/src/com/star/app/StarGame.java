@@ -5,12 +5,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.star.app.game.GameController;
 import com.star.app.screen.GameScreen;
 import com.star.app.screen.ScreenManager;
 
 public class StarGame extends Game {
     private SpriteBatch batch;
+
 
     @Override
     public void create() {
