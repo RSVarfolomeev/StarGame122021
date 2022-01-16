@@ -15,7 +15,9 @@ public class GameController {
     private PowerUpsController powerUpsController;
     private Hero hero;
     private Vector2 tempVec;
+    private Vector2 tempVecPowerUp;
     private Stage stage;
+    private int lvlScale;
     private boolean pause;
 
     public void setPause(boolean pause) {
@@ -50,6 +52,10 @@ public class GameController {
         return bulletController;
     }
 
+    public int getLvlScale() {
+        return lvlScale;
+    }
+
     public GameController(SpriteBatch batch) {
         this.background = new Background(this);
         this.hero = new Hero(this);
@@ -58,16 +64,10 @@ public class GameController {
         this.particleController = new ParticleController();
         this.powerUpsController = new PowerUpsController(this);
         this.tempVec = new Vector2();
+        this.tempVecPowerUp = new Vector2();
         this.stage = new Stage(ScreenManager.getInstance().getViewport(), batch);
         stage.addActor(hero.getShop());
         Gdx.input.setInputProcessor(stage);
-
-        for (int i = 0; i < 3; i++) {
-            asteroidController.setup(MathUtils.random(0, ScreenManager.SCREEN_WIDTH),
-                    MathUtils.random(0, ScreenManager.SCREEN_HEIGHT),
-                    MathUtils.random(-200, 200),
-                    MathUtils.random(-200, 200), 1.0f);
-        }
     }
 
     public void update(float dt) {
@@ -80,11 +80,24 @@ public class GameController {
         bulletController.update(dt);
         particleController.update(dt);
         powerUpsController.update(dt);
+        checkAsteroidLevel();
         checkCollisions();
         if (!hero.isAlive()) {
             ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.GAMEOVER, hero);
         }
         stage.act(dt);
+    }
+
+    private void checkAsteroidLevel() {
+        if (asteroidController.getActiveList().size() == 0) {
+            lvlScale += 1;
+            for (int i = 0; i < lvlScale; i++) {
+                asteroidController.setup(MathUtils.random(0, ScreenManager.SCREEN_WIDTH),
+                        MathUtils.random(0, ScreenManager.SCREEN_HEIGHT),
+                        MathUtils.random(-200, 200),
+                        MathUtils.random(-200, 200), 1.0f, lvlScale);
+            }
+        }
     }
 
     private void checkCollisions() {
@@ -104,7 +117,7 @@ public class GameController {
                 if (a.takeDamage(2)) {
                     hero.addScore(a.getHpMax() * 50);
                 }
-                hero.takeDamage(2);
+                hero.takeDamage(2 * lvlScale);
             }
         }
 
@@ -141,6 +154,14 @@ public class GameController {
                 hero.consume(p);
                 particleController.getEffectBuilder().takePowerUpEffect(p.getPosition().x, p.getPosition().y, p.getType());
                 p.deactivate();
+            }
+        }
+
+        for (int i = 0; i < powerUpsController.getActiveList().size(); i++) {
+            PowerUp p = powerUpsController.getActiveList().get(i);
+            if (hero.getHeroPowerUpMagnetArea().contains(p.getPosition())) {
+                tempVecPowerUp.set(hero.getPosition()).sub(p.getPosition()).nor();
+                p.getPosition().mulAdd(tempVecPowerUp, 2);
             }
         }
 
