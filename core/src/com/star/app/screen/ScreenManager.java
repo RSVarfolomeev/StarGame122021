@@ -9,11 +9,13 @@ import com.star.app.game.Hero;
 import com.star.app.screen.utils.Assets;
 
 public class ScreenManager {
-    public enum ScreenType{
+    public enum ScreenType {
         GAME, MENU, GAMEOVER
     }
+
     public static final int SCREEN_WIDTH = 1280;
     public static final int SCREEN_HEIGHT = 720;
+    public static final int SCREEN_HALF_HEIGHT = SCREEN_HEIGHT / 2;
 
     private StarGame game;
     private SpriteBatch batch;

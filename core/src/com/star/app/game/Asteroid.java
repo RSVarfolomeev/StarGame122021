@@ -75,11 +75,11 @@ public class Asteroid implements Poolable {
             deactivate();
             if (scale > 0.3f) {
                 gc.getAsteroidController().setup(position.x, position.y,
-                        MathUtils.random(-150, 150), MathUtils.random(-150, 150), scale - 0.25f, gc.getLvlScale());
+                        MathUtils.random(-150, 150), MathUtils.random(-150, 150), scale - 0.25f);
                 gc.getAsteroidController().setup(position.x, position.y,
-                        MathUtils.random(-190, 190), MathUtils.random(-190, 190), scale - 0.25f, gc.getLvlScale());
+                        MathUtils.random(-190, 190), MathUtils.random(-190, 190), scale - 0.25f);
                 gc.getAsteroidController().setup(position.x, position.y,
-                        MathUtils.random(-150, 150), MathUtils.random(-150, 150), scale - 0.25f, gc.getLvlScale());
+                        MathUtils.random(-150, 150), MathUtils.random(-150, 150), scale - 0.25f);
             }
 
             return true;
@@ -110,11 +110,11 @@ public class Asteroid implements Poolable {
         hitArea.setPosition(position);
     }
 
-    public void activate(float x, float y, float vx, float vy, float scale, int lvlScale) {
+    public void activate(float x, float y, float vx, float vy, float scale) {
         position.set(x, y);
         velocity.set(vx, vy);
         active = true;
-        hpMax = (int) (10 * scale * lvlScale);
+        hpMax = (int) (8 * scale + gc.getLevel() * 2);
         hp = hpMax;
         angle = MathUtils.random(0.0f, 360.0f);
         rotationSpeed = MathUtils.random(-180.0f, 180.0f);
