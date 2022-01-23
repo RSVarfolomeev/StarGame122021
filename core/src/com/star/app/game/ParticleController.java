@@ -18,7 +18,7 @@ public class ParticleController extends ObjectPool<Particle> {
         }
 
         public void takePowerUpEffect(float x, float y, PowerUp.Type type) {
-            switch (type){
+            switch (type) {
                 case MEDKIT:
                     for (int i = 0; i < 16; i++) {
                         float angle = 6.28f / 16.0f * i;
@@ -49,6 +49,15 @@ public class ParticleController extends ObjectPool<Particle> {
             }
         }
 
+        public void takeBotDestroyEffect(float x, float y) {
+            for (int i = 0; i < 16; i++) {
+                float angle = 6.28f / 16.0f * i;
+                setup(x, y, (float) Math.cos(angle) * 20, (float) Math.sin(angle) * 20,
+                        5.0f, 3.0f, 20.0f,
+                        1.0f, 0.5f, 0, 0.3f,
+                        1.0f, 0.3f, 0, 0.01f);
+            }
+        }
     }
 
     private TextureRegion oneParticle;

@@ -6,14 +6,23 @@ import com.star.app.game.helpers.Poolable;
 import com.star.app.screen.ScreenManager;
 
 public class Bullet implements Poolable {
+    public enum Owner {
+        HERO, BOT
+    }
+
     private GameController gc;
     private Vector2 position;
     private Vector2 velocity;
     private boolean active;
+    private Owner owner;
 
     @Override
     public boolean isActive() {
         return active;
+    }
+
+    public Owner getOwner() {
+        return owner;
     }
 
     public Vector2 getPosition() {
@@ -51,9 +60,10 @@ public class Bullet implements Poolable {
         }
     }
 
-    public void activate(float x, float y, float vx, float vy) {
+    public void activate(float x, float y, float vx, float vy, Owner owner) {
         position.set(x, y);
         velocity.set(vx, vy);
         active = true;
+        this.owner = owner;
     }
 }
