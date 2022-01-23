@@ -49,15 +49,36 @@ public class ParticleController extends ObjectPool<Particle> {
             }
         }
 
-        public void takeBotDestroyEffect(float x, float y) {
-            for (int i = 0; i < 16; i++) {
-                float angle = 6.28f / 16.0f * i;
-                setup(x, y, (float) Math.cos(angle) * 20, (float) Math.sin(angle) * 20,
-                        5.0f, 3.0f, 20.0f,
-                        1.0f, 0.5f, 0, 0.3f,
-                        1.0f, 0.3f, 0, 0.01f);
+        public void bulletCollideWithAsteroid(Bullet b) {
+            setup(b.getPosition().x + MathUtils.random(-4, 4), b.getPosition().y + MathUtils.random(-4, 4),
+                    b.getVelocity().x * -0.3f + MathUtils.random(-30, 30), b.getVelocity().y * -0.3f + MathUtils.random(-30, 30),
+                    0.2f, 2.2f, 1.5f,
+                    1.0f, 1.0f, 1.0f, 1,
+                    0, 0, 1, 0);
+        }
+
+        public void createBulletTrace(OwnerType ownerType, Bullet b) {
+            switch (ownerType) {
+                case PLAYER:
+                    for (int i = 0; i < 2; i++) {
+                        setup(b.getPosition().x + MathUtils.random(-4, 4), b.getPosition().y + MathUtils.random(-4, 4),
+                                b.getVelocity().x * 0.1f + MathUtils.random(-20, 20), b.getVelocity().y * 0.1f + MathUtils.random(-20, 20),
+                                0.1f, 1.2f, 0.2f,
+                                1.0f, 0.7f, 0, 1,
+                                1, 1, 1, 0);
+                    }
+                    break;
+                case BOT:
+                    setup(b.getPosition().x, b.getPosition().y,
+                            b.getVelocity().x * 0.1f + MathUtils.random(-20, 20), b.getVelocity().y * 0.1f + MathUtils.random(-20, 20),
+                            0.13f, 2.2f, 1.5f,
+                            0.0f, 0.9f, 0, 1,
+                            0, 0.8f, 0.1f, 0);
+
+                    break;
             }
         }
+
     }
 
     private TextureRegion oneParticle;
