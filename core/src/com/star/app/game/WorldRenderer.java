@@ -31,6 +31,7 @@ public class WorldRenderer {
         gc.getParticleController().render(batch);
         gc.getPowerUpsController().render(batch);
         gc.getInfoController().render(batch, font32);
+        gc.getBotController().render(batch);
         gc.getHero().render(batch);
         gc.getHero().renderGUI(batch, font32);
         if (gc.getTimer() < 3) {
