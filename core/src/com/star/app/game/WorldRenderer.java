@@ -10,6 +10,7 @@ import com.star.app.screen.utils.Assets;
 public class WorldRenderer {
     private GameController gc;
     private SpriteBatch batch;
+    private BitmapFont font24;
     private BitmapFont font32;
     private BitmapFont font72;
     private StringBuilder sb;
@@ -17,6 +18,7 @@ public class WorldRenderer {
     public WorldRenderer(GameController gc, SpriteBatch batch) {
         this.gc = gc;
         this.batch = batch;
+        this.font24 = Assets.getInstance().getAssetManager().get("fonts/font24.ttf", BitmapFont.class);
         this.font32 = Assets.getInstance().getAssetManager().get("fonts/font32.ttf", BitmapFont.class);
         this.font72 = Assets.getInstance().getAssetManager().get("fonts/font72.ttf", BitmapFont.class);
         this.sb = new StringBuilder();
@@ -33,7 +35,7 @@ public class WorldRenderer {
         gc.getInfoController().render(batch, font32);
         gc.getBotController().render(batch);
         gc.getHero().render(batch);
-        gc.getHero().renderGUI(batch, font32);
+        gc.getHero().renderGUI(batch, font24);
         if (gc.getTimer() < 3) {
             sb.setLength(0);
             sb.append("Level ").append(gc.getLevel());

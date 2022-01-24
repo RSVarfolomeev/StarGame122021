@@ -23,6 +23,7 @@ public class Ship {
     protected Weapon[] weapons;
     protected int weaponNum;
     protected OwnerType ownerType;
+    protected int damageIncrease;
 
     public OwnerType getOwnerType() {
         return ownerType;
@@ -48,6 +49,10 @@ public class Ship {
         return position;
     }
 
+    public GameController getGc() {
+        return gc;
+    }
+
     public Ship(GameController gc, int hpMax, float enginePower) {
         this.gc = gc;
         this.hpMax = hpMax;
@@ -55,6 +60,7 @@ public class Ship {
 
         this.angle = 0.0f;
         this.enginePower = enginePower;
+        this.damageIncrease = 0;
 
         createWeapons();
         this.currentWeapon = weapons[weaponNum];
@@ -127,31 +133,31 @@ public class Ship {
 
     private void createWeapons() {
         weapons = new Weapon[]{
-                new Weapon(gc, this, "Laser", 0.2f, 1, 300.0f, 300,
+                new Weapon(gc, this, "Laser1", 0.2f, 2, 1, 300.0f, 300,
                         new Vector3[]{
                                 new Vector3(28, 90, 0),
                                 new Vector3(28, -90, 0)
                         }),
-                new Weapon(gc, this, "Laser", 0.2f, 1, 600.0f, 500,
+                new Weapon(gc, this, "Laser2", 0.2f, 3,1, 600.0f, 500,
                         new Vector3[]{
                                 new Vector3(28, 0, 0),
-                                new Vector3(28, 90, 20),
-                                new Vector3(28, -90, -20)
+                                new Vector3(28, 90, 10),
+                                new Vector3(28, -90, -10)
                         }),
-                new Weapon(gc, this, "Laser", 0.1f, 1, 600.0f, 1000,
+                new Weapon(gc, this, "Laser3", 0.1f, 3,1, 600.0f, 1000,
                         new Vector3[]{
                                 new Vector3(28, 0, 0),
-                                new Vector3(28, 90, 20),
-                                new Vector3(28, -90, -20)
+                                new Vector3(28, 90, 10),
+                                new Vector3(28, -90, -10)
                         }),
-                new Weapon(gc, this, "Laser", 0.1f, 2, 600.0f, 1000,
+                new Weapon(gc, this, "Laser4", 0.1f, 4,2, 600.0f, 1000,
                         new Vector3[]{
                                 new Vector3(28, 90, 0),
                                 new Vector3(28, -90, 0),
                                 new Vector3(28, 90, 15),
                                 new Vector3(28, -90, -15)
                         }),
-                new Weapon(gc, this, "Laser", 0.1f, 3, 600.0f, 1500,
+                new Weapon(gc, this, "Laser5", 0.1f, 5,3, 600.0f, 1500,
                         new Vector3[]{
                                 new Vector3(28, 0, 0),
                                 new Vector3(28, 90, 10),
