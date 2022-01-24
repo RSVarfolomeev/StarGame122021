@@ -31,7 +31,22 @@ public class PowerUpsController extends ObjectPool<PowerUp> {
 
     public void setup(float x, float y, float probability) {
         if (MathUtils.random() <= probability) {
-            getActiveElement().activate(PowerUp.Type.values()[MathUtils.random(0, 2)], x, y, 30);
+            int type = MathUtils.random(0, 2);
+            if (type != 2){
+                getActiveElement().activate(PowerUp.Type.values()[type], x, y, (int) (30 * ((float)(gc.getLevel() - 1) * 0.1f  + 1)));
+            } else {
+                getActiveElement().activate(PowerUp.Type.values()[2], x, y, 100);
+            }
+        }
+    }
+
+    public void setupWithType(float x, float y, float probability, PowerUp.Type type) {
+        if (MathUtils.random() <= probability) {
+            if (type != PowerUp.Type.AMMOS){
+                getActiveElement().activate(type, x, y, (int) (30 * ((float)(gc.getLevel() - 1) * 0.1f  + 1)));
+            } else {
+                getActiveElement().activate(type, x, y, 100);
+            }
         }
     }
 

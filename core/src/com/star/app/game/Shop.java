@@ -14,6 +14,10 @@ import com.star.app.screen.utils.Assets;
 public class Shop extends Group {
     private Hero hero;
     private BitmapFont font24;
+    private int ammoCostScale;
+    private int damageCostScale;
+    private int weaponCostScale;
+    private int magnetCostScale;
 
     public Shop(final Hero hero) {
         this.hero = hero;
@@ -87,9 +91,10 @@ public class Shop extends Group {
         btnWeapon.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (hero.isMoneyEnough(Hero.Skill.WEAPON.cost)) {
+                if (hero.isMoneyEnough(Hero.Skill.WEAPON.cost + weaponCostScale)) {
                     if (hero.upgrade(Hero.Skill.WEAPON)) {
-                        hero.decreaseMoney(Hero.Skill.WEAPON.cost);
+                        hero.decreaseMoney(Hero.Skill.WEAPON.cost + weaponCostScale);
+                        weaponCostScale = weaponCostScale + 300;
                     }
                 }
             }
@@ -98,20 +103,53 @@ public class Shop extends Group {
         btnWeapon.setPosition(20, 100);
         this.addActor(btnWeapon);
 
-
-        final TextButton btnMagnet = new TextButton("Magnet", textButtonStyle);
-        btnMagnet.addListener(new ChangeListener() {
+        final TextButton btnDamage = new TextButton("+1 Damage", textButtonStyle);
+        btnDamage.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (hero.isMoneyEnough(Hero.Skill.MAGNET.cost)) {
-                    if (hero.upgrade(Hero.Skill.MAGNET)) {
-                        hero.decreaseMoney(Hero.Skill.MAGNET.cost);
+                if (hero.isMoneyEnough(Hero.Skill.DAMAGE.cost + damageCostScale)) {
+                    if (hero.upgrade(Hero.Skill.DAMAGE)) {
+                        hero.decreaseMoney(Hero.Skill.DAMAGE.cost + damageCostScale);
+                        damageCostScale = damageCostScale + 100;
                     }
                 }
             }
         });
 
-        btnMagnet.setPosition(120, 100);
+        btnDamage.setPosition(120, 100);
+        this.addActor(btnDamage);
+
+        final TextButton btnAmmo = new TextButton("Ammo", textButtonStyle);
+        btnAmmo.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (hero.isMoneyEnough(Hero.Skill.AMMO.cost + ammoCostScale)) {
+                    if (hero.upgrade(Hero.Skill.AMMO)) {
+                        hero.decreaseMoney(Hero.Skill.AMMO.cost + ammoCostScale);
+                        ammoCostScale = ammoCostScale + 2;
+                    }
+                }
+            }
+        });
+
+        btnAmmo.setPosition(120, 300);
+        this.addActor(btnAmmo);
+
+
+        final TextButton btnMagnet = new TextButton("Magnet", textButtonStyle);
+        btnMagnet.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (hero.isMoneyEnough(Hero.Skill.MAGNET.cost + magnetCostScale)) {
+                    if (hero.upgrade(Hero.Skill.MAGNET)) {
+                        hero.decreaseMoney(Hero.Skill.MAGNET.cost + magnetCostScale);
+                        magnetCostScale = magnetCostScale + 5;
+                    }
+                }
+            }
+        });
+
+        btnMagnet.setPosition(120, 200);
         this.addActor(btnMagnet);
 
 

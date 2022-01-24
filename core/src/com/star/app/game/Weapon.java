@@ -15,6 +15,7 @@ public class Weapon {
     private float bulletSpeed;
     private int maxBullets;
     private int curBullets;
+    private int bulletRate;
     private Sound shootSound;
 
     // x - растояние от центра
@@ -30,19 +31,28 @@ public class Weapon {
         return damage;
     }
 
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
     public int getMaxBullets() {
         return maxBullets;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public int getCurBullets() {
         return curBullets;
     }
 
-    public Weapon(GameController gc, Ship ship, String title, float firePeriod, int damage,
+    public Weapon(GameController gc, Ship ship, String title, float firePeriod, int bulletRate, int damage,
                   float bulletSpeed, int maxBullets, Vector3[] slots) {
         this.gc = gc;
         this.ship = ship;
         this.title = title;
+        this.bulletRate = bulletRate;
         this.firePeriod = firePeriod;
         this.damage = damage;
         this.bulletSpeed = bulletSpeed;
@@ -53,9 +63,9 @@ public class Weapon {
     }
 
     public void fire() {
-        if (curBullets > 0) {
-            curBullets--;
-            shootSound.play();
+        if (curBullets - bulletRate >= 0) {
+            curBullets = curBullets - bulletRate;
+            shootSound.play(0.7f);
             for (int i = 0; i < slots.length; i++) {
                 float x, y, vx, vy;
                 x = ship.getPosition().x + MathUtils.cosDeg(ship.getAngle() + slots[i].y) * slots[i].x;

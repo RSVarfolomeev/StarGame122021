@@ -5,18 +5,16 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.star.app.screen.ScreenManager;
 import com.star.app.screen.utils.Assets;
 
 public class Hero extends Ship{
     public enum Skill {
         HP_MAX(20, 10), HP(20, 10), WEAPON(100, 1),
-        MAGNET(50, 10);
+        DAMAGE(100, 1), AMMO(20, 300), MAGNET(10, 10);
 
         int cost;
         int power;
@@ -72,7 +70,7 @@ public class Hero extends Ship{
         this.velocity = new Vector2(0, 0);
         this.texture = Assets.getInstance().getAtlas().findRegion("ship");
         this.hitArea = new Circle(position, 29);
-        this.money = 1500;
+        this.money = 0;
         this.sb = new StringBuilder();
         this.shop = new Shop(this);
         this.magneticField = new Circle(position, 100);
@@ -83,20 +81,23 @@ public class Hero extends Ship{
         sb.setLength(0);
         sb.append("SCORE: ").append(scoreView).append("\n");
         sb.append("HP: ").append(hp).append(" / ").append(hpMax).append("\n");
-        sb.append("BULLERS: ").append(currentWeapon.getCurBullets()).append(" / ").append(currentWeapon.getMaxBullets()).append("\n");
+        sb.append("BULLETS: ").append(currentWeapon.getCurBullets()).append(" / ").append(currentWeapon.getMaxBullets()).append("\n");
+        sb.append("WEAPON/DAMAGE: ").append(currentWeapon.getTitle()).append(" / ").append(currentWeapon.getDamage()).append("\n");
         sb.append("MONEY: ").append(money).append("\n");
         sb.append("MAGNET: ").append((int) magneticField.radius).append("\n");
+        sb.append("LEVEL: ").append(gc.getLevel()).append("\n");
+        sb.append("ASREROIDS LEFT: ").append(gc.getAsteroidController().getActiveList().size()).append("\n");
         font.draw(batch, sb, 20, 700);
     }
 
     public boolean upgrade(Skill skill) {
         switch (skill) {
             case HP_MAX:
-                hpMax += Skill.HP_MAX.power;
+                hpMax += (int)(Skill.HP_MAX.power * ((float)(gc.getLevel() - 1) * 0.1f  + 1));
                 return true;
             case HP:
                 if (hp + Skill.HP.power <= hpMax) {
-                    hp += Skill.HP.power;
+                    hp += (int)(Skill.HP.power * ((float)(gc.getLevel() - 1) * 0.1f  + 1));
                     return true;
                 }
                 break;
@@ -104,8 +105,20 @@ public class Hero extends Ship{
                 if (weaponNum < weapons.length - 1) {
                     weaponNum++;
                     currentWeapon = weapons[weaponNum];
+                    currentWeapon.setDamage(currentWeapon.getDamage() + damageIncrease);
                     return true;
                 }
+                break;
+            case DAMAGE:
+                damageIncrease++;
+                currentWeapon.setDamage(currentWeapon.getDamage() + Skill.DAMAGE.power);
+                return true;
+            case AMMO:
+                if (currentWeapon.getCurBullets() < currentWeapon.getMaxBullets()) {
+                    currentWeapon.addAmmos(Skill.AMMO.power);
+                    return true;
+                }
+                break;
             case MAGNET:
                 if (magneticField.radius < 500) {
                     magneticField.radius += Skill.MAGNET.power;
@@ -135,8 +148,9 @@ public class Hero extends Ship{
                 gc.getInfoController().setup(p.getPosition().x, p.getPosition().y, sb.toString(), Color.YELLOW);
                 break;
             case AMMOS:
+                int oldAmmo = currentWeapon.getCurBullets();
                 currentWeapon.addAmmos(p.getPower());
-                sb.append("AMMOS +").append(p.getPower());
+                sb.append("AMMOS +").append(currentWeapon.getCurBullets() - oldAmmo);
                 gc.getInfoController().setup(p.getPosition().x, p.getPosition().y, sb.toString(), Color.ORANGE);
                 break;
         }
@@ -205,7 +219,7 @@ public class Hero extends Ship{
 
     private void updateScore(float dt) {
         if (scoreView < score) {
-            scoreView += 2000 * dt;
+            scoreView += 5000 * dt;
             if (scoreView > score) {
                 scoreView = score;
             }

@@ -1,14 +1,9 @@
 package com.star.app.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.star.app.game.Background;
@@ -23,6 +18,7 @@ public class GameOverScreen extends AbstractScreen {
     private BitmapFont font24;
     private StringBuilder sb;
     private Hero defeatedHero;
+    private Music music;
 
     public void setDefeatedHero(Hero defeatedHero) {
         this.defeatedHero = defeatedHero;
@@ -39,6 +35,11 @@ public class GameOverScreen extends AbstractScreen {
         this.font72 = Assets.getInstance().getAssetManager().get("fonts/font72.ttf");
         this.font48 = Assets.getInstance().getAssetManager().get("fonts/font48.ttf");
         this.font24 = Assets.getInstance().getAssetManager().get("fonts/font24.ttf");
+
+        this.music = Assets.getInstance().getAssetManager().get("audio/gameover.mp3");
+        this.music.setLooping(true);
+        this.music.setVolume(0.8f);
+        this.music.play();
     }
 
     public void update(float dt) {
@@ -56,6 +57,7 @@ public class GameOverScreen extends AbstractScreen {
         background.render(batch);
         font72.draw(batch, "Game over", 0, 600, 1280, Align.center, false);
         sb.setLength(0);
+        sb.append("MAX LEVEL: ").append(defeatedHero.getGc().getLevel()).append("\n");
         sb.append("SCORE: ").append(defeatedHero.getScore()).append("\n");
         sb.append("MONEY: ").append(defeatedHero.getMoney()).append("\n");
         font48.draw(batch, sb, 0, 400, 1280, Align.center, false);
