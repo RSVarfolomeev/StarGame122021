@@ -56,20 +56,36 @@ public class Bot extends Ship implements Poolable {
         currentWeapon.addAmmos(currentWeapon.getMaxBullets());
 
         float lvlHpScale = 0.125f;
-        if (gc.getLevel() >= 11){
+        if (gc.getLevel() >= 11) {
             lvlHpScale = 0.250f;
+            if (currentWeapon.getBulletSpeed() < 350) {
+                currentWeapon.setBulletSpeed(currentWeapon.getBulletSpeed() + 50.0f);
+            }
         }
-        if (gc.getLevel() >= 15){
+        if (gc.getLevel() >= 14) {
             lvlHpScale = 0.5f;
+            if (currentWeapon.getBulletSpeed() < 400) {
+                currentWeapon.setBulletSpeed(currentWeapon.getBulletSpeed() + 50.0f);
+            }
         }
-        if (gc.getLevel() >= 19){
-            currentWeapon.setDamage(currentWeapon.getDamage() + 1);
+        if (gc.getLevel() >= 18) {
+            if (currentWeapon.getTitle() == "Laser1" || currentWeapon.getTitle() == "Laser2" || currentWeapon.getTitle() == "Laser3") {
+                currentWeapon.setDamage(gc.getLevel() / 2 - 7);
+            }
+            if (currentWeapon.getTitle() == "Laser4") {
+                currentWeapon.setDamage((int) ((gc.getLevel() / 2 - 6) * 1.1f));
+            }
+            if (currentWeapon.getTitle() == "Laser5") {
+                currentWeapon.setDamage((int) ((gc.getLevel() / 2 - 5) * 1.2f));
+            }
         }
-        if (gc.getLevel() >= 23){
+        if (gc.getLevel() >= 25) {
             lvlHpScale = 1.0f;
         }
 
-        hpMax = (int) (10 * gc.getLevel() * ((float)(4 - randomWeaponType) * lvlHpScale + 1));
+        System.out.println("Damage - " + currentWeapon.getDamage() + " Name - " + currentWeapon.getTitle() + " BulletSpeed - " + currentWeapon.getBulletSpeed());
+
+        hpMax = (int) (10 * gc.getLevel() * ((float) (4 - randomWeaponType) * lvlHpScale + 1));
         hp = hpMax;
         active = true;
     }
@@ -86,7 +102,7 @@ public class Bot extends Ship implements Poolable {
             deactivate();
             gc.getParticleController().getEffectBuilder().botDestroyEffect(position.x, position.y);
             if (gc.getLevel() <= 4) {
-                gc.getPowerUpsController().setupWithType(position.x, position.y, 0.67f, PowerUp.Type.AMMOS);
+                gc.getPowerUpsController().setupWithType(position.x, position.y, 1.0f, PowerUp.Type.AMMOS);
             }
             for (int i = 0; i < 3; i++) {
                 gc.getPowerUpsController().setup(position.x, position.y, 0.5f);

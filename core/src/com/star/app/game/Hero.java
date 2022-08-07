@@ -14,7 +14,7 @@ import com.star.app.screen.utils.Assets;
 public class Hero extends Ship{
     public enum Skill {
         HP_MAX(20, 10), HP(20, 10), WEAPON(100, 1),
-        DAMAGE(100, 1), AMMO(20, 300), MAGNET(10, 10);
+        DAMAGE(200, 1), AMMO(20, 300), MAGNET(10, 10);
 
         int cost;
         int power;
@@ -93,11 +93,11 @@ public class Hero extends Ship{
     public boolean upgrade(Skill skill) {
         switch (skill) {
             case HP_MAX:
-                hpMax += (int)(Skill.HP_MAX.power * ((float)(gc.getLevel() - 1) * 0.1f  + 1));
+                hpMax += (int)(Skill.HP_MAX.power * ((float)(gc.getLevel() - 1) * 0.2f  + 1));
                 return true;
             case HP:
                 if (hp + Skill.HP.power <= hpMax) {
-                    hp += (int)(Skill.HP.power * ((float)(gc.getLevel() - 1) * 0.1f  + 1));
+                    hp += (int)(Skill.HP.power * ((float)(gc.getLevel() - 1) * 0.2f  + 1));
                     return true;
                 }
                 break;
@@ -160,17 +160,17 @@ public class Hero extends Ship{
         super.update(dt);
         updateScore(dt);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isButtonPressed(Input.Buttons.LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             tryToFire();
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             angle += 180.0f * dt;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             angle -= 180.0f * dt;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             accelerate(dt);
 
             float bx = position.x + MathUtils.cosDeg(angle + 180) * 20;
@@ -184,7 +184,7 @@ public class Hero extends Ship{
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             brake(dt);
 
             float bx = position.x + MathUtils.cosDeg(angle + 90) * 20;
@@ -208,7 +208,7 @@ public class Hero extends Ship{
 
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.TAB)) {
             shop.setVisible(true);
             gc.setPause(true);
         }

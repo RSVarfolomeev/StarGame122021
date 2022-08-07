@@ -56,6 +56,10 @@ public class ParticleController extends ObjectPool<Particle> {
                         5.0f, 3.0f, 20.0f,
                         1.0f, 0.5f, 0, 0.3f,
                         1.0f, 0.3f, 0, 0.01f);
+                setup(x, y, (float) Math.cos(angle) * 200, (float) Math.sin(angle) * 200,
+                        2.0f, 3.0f, 0.5f,
+                        1, 1.0f, 0, 1.0f,
+                        1, 0.2f, 0, 0.5f);
             }
         }
 

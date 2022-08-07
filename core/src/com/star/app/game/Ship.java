@@ -138,32 +138,32 @@ public class Ship {
                                 new Vector3(28, 90, 0),
                                 new Vector3(28, -90, 0)
                         }),
-                new Weapon(gc, this, "Laser2", 0.2f, 3,1, 600.0f, 500,
+                new Weapon(gc, this, "Laser2", 0.2f, 3,1, 350.0f, 600,
                         new Vector3[]{
                                 new Vector3(28, 0, 0),
-                                new Vector3(28, 90, 10),
-                                new Vector3(28, -90, -10)
+                                new Vector3(28, 90, 5),
+                                new Vector3(28, -90, -5)
                         }),
-                new Weapon(gc, this, "Laser3", 0.1f, 3,1, 600.0f, 1000,
+                new Weapon(gc, this, "Laser3", 0.1f, 3,1, 400.0f, 900,
                         new Vector3[]{
                                 new Vector3(28, 0, 0),
-                                new Vector3(28, 90, 10),
-                                new Vector3(28, -90, -10)
+                                new Vector3(28, 90, 5),
+                                new Vector3(28, -90, -5)
                         }),
-                new Weapon(gc, this, "Laser4", 0.1f, 4,2, 600.0f, 1000,
+                new Weapon(gc, this, "Laser4", 0.1f, 4,2, 450.0f, 1200,
                         new Vector3[]{
                                 new Vector3(28, 90, 0),
                                 new Vector3(28, -90, 0),
-                                new Vector3(28, 90, 15),
-                                new Vector3(28, -90, -15)
+                                new Vector3(28, 90, 10),
+                                new Vector3(28, -90, -10)
                         }),
-                new Weapon(gc, this, "Laser5", 0.1f, 5,3, 600.0f, 1500,
+                new Weapon(gc, this, "Laser5", 0.1f, 5,3, 500.0f, 1500,
                         new Vector3[]{
                                 new Vector3(28, 0, 0),
-                                new Vector3(28, 90, 10),
-                                new Vector3(28, 90, 20),
-                                new Vector3(28, -90, -10),
-                                new Vector3(28, -90, -20)
+                                new Vector3(28, 90, 5),
+                                new Vector3(28, 90, 15),
+                                new Vector3(28, -90, -5),
+                                new Vector3(28, -90, -15)
                         })
         };
     }

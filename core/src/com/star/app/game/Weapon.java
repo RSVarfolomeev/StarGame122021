@@ -27,6 +27,14 @@ public class Weapon {
         return firePeriod;
     }
 
+    public float getBulletSpeed() {
+        return bulletSpeed;
+    }
+
+    public void setBulletSpeed(float bulletSpeed) {
+        this.bulletSpeed = bulletSpeed;
+    }
+
     public int getDamage() {
         return damage;
     }

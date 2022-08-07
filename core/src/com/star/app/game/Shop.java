@@ -14,6 +14,7 @@ import com.star.app.screen.utils.Assets;
 public class Shop extends Group {
     private Hero hero;
     private BitmapFont font24;
+    private int hpMaxCostScale;
     private int ammoCostScale;
     private int damageCostScale;
     private int weaponCostScale;
@@ -60,9 +61,10 @@ public class Shop extends Group {
         btnHpMax.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (hero.isMoneyEnough(Hero.Skill.HP_MAX.cost)) {
+                if (hero.isMoneyEnough(Hero.Skill.HP_MAX.cost + hpMaxCostScale)) {
                     if (hero.upgrade(Hero.Skill.HP_MAX)) {
-                        hero.decreaseMoney(Hero.Skill.HP_MAX.cost);
+                        hero.decreaseMoney(Hero.Skill.HP_MAX.cost + hpMaxCostScale);
+                        hpMaxCostScale = hpMaxCostScale + 2;
                     }
                 }
             }
@@ -94,7 +96,7 @@ public class Shop extends Group {
                 if (hero.isMoneyEnough(Hero.Skill.WEAPON.cost + weaponCostScale)) {
                     if (hero.upgrade(Hero.Skill.WEAPON)) {
                         hero.decreaseMoney(Hero.Skill.WEAPON.cost + weaponCostScale);
-                        weaponCostScale = weaponCostScale + 300;
+                        weaponCostScale = (weaponCostScale + 200) * 2;
                     }
                 }
             }
@@ -110,7 +112,7 @@ public class Shop extends Group {
                 if (hero.isMoneyEnough(Hero.Skill.DAMAGE.cost + damageCostScale)) {
                     if (hero.upgrade(Hero.Skill.DAMAGE)) {
                         hero.decreaseMoney(Hero.Skill.DAMAGE.cost + damageCostScale);
-                        damageCostScale = damageCostScale + 100;
+                        damageCostScale = damageCostScale + 30;
                     }
                 }
             }

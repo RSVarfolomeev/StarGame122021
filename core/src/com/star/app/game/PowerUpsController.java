@@ -35,7 +35,7 @@ public class PowerUpsController extends ObjectPool<PowerUp> {
             if (type != 2){
                 getActiveElement().activate(PowerUp.Type.values()[type], x, y, (int) (30 * ((float)(gc.getLevel() - 1) * 0.1f  + 1)));
             } else {
-                getActiveElement().activate(PowerUp.Type.values()[2], x, y, 100);
+                getActiveElement().activate(PowerUp.Type.values()[2], x, y, 75);
             }
         }
     }
@@ -45,7 +45,7 @@ public class PowerUpsController extends ObjectPool<PowerUp> {
             if (type != PowerUp.Type.AMMOS){
                 getActiveElement().activate(type, x, y, (int) (30 * ((float)(gc.getLevel() - 1) * 0.1f  + 1)));
             } else {
-                getActiveElement().activate(type, x, y, 100);
+                getActiveElement().activate(type, x, y, 75);
             }
         }
     }
